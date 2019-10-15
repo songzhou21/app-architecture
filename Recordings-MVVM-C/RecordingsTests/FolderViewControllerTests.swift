@@ -69,7 +69,7 @@ class FolderViewControllerTests: XCTestCase, UINavigationControllerDelegate {
 		XCTAssertEqual(rows1[0], childFolder2)
 		XCTAssertEqual(rows1[1].uuid, uuid4)
 		
-		viewModel.folder.value = store.rootFolder
+		viewModel.folder.accept(store.rootFolder)
 		
 		guard contentsObserved.count == 2 else { XCTFail(); return }
 		let sections2 = contentsObserved[1]
@@ -168,7 +168,7 @@ class FolderViewControllerTests: XCTestCase, UINavigationControllerDelegate {
 		XCTAssertEqual(titleObserved.count, 2)
 		XCTAssertEqual(titleObserved[1], "Another name")
 		
-		viewModel.folder.value = store.rootFolder
+		viewModel.folder.accept(store.rootFolder)
 		
 		XCTAssertEqual(titleObserved.count, 3)
 		XCTAssertEqual(titleObserved[2], "Recordings")

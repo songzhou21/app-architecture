@@ -14,7 +14,7 @@ final class Recorder: NSObject, AVAudioRecorderDelegate {
 		super.init()
 		
 		do {
-			try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+			try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord)
 			try AVAudioSession.sharedInstance().setActive(true)
 			AVAudioSession.sharedInstance().requestRecordPermission() { allowed in
 				if allowed {

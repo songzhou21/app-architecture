@@ -4,11 +4,11 @@ import RxCocoa
 import RxDataSources
 
 class FolderViewModel {
-	let folder: Variable<Folder>
+	let folder: BehaviorRelay<Folder>
 	private let folderUntilDeleted: Observable<Folder?>
 	
 	init(initialFolder: Folder = Store.shared.rootFolder) {
-		folder = Variable(initialFolder)
+		folder = BehaviorRelay(value: initialFolder)
 		folderUntilDeleted = folder.asObservable()
 			// Every time the folder changes
 			.flatMapLatest { currentFolder in

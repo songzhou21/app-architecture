@@ -4,7 +4,7 @@ import RxCocoa
 import AVFoundation
 
 class PlayViewModel {
-	let recording: Variable<Recording?> = Variable(nil)
+	let recording: BehaviorRelay<Recording?> = BehaviorRelay(value: nil)
 	let playState: Observable<Player.State?>
 	let togglePlay = PublishSubject<()>()
 	let setProgress = PublishSubject<TimeInterval>()
@@ -20,12 +20,13 @@ class PlayViewModel {
 				// Start by emitting the current recording
 				return Observable.just(currentRecording)
 				// Re-emit the recording every time a non-delete change occurs
-				.concat(currentRecording.changeObservable.map { _ in currentRecording })
+					.concat(currentRecording.changeObservable.map { _ in recording})
 				// Stop when a delete occurs
 				.takeUntil(currentRecording.deletedObservable)
 				// After a delete, set the current recording back to `nil`
 				.concat(Observable.just(nil))
 			}.share(replay: 1)
+		
 		playState = recordingUntilDeleted.flatMapLatest { [togglePlay, setProgress] recording throws -> Observable<Player.State?> in
 			guard let r = recording else {
 				return Observable<Player.State?>.just(nil)
@@ -66,7 +67,7 @@ class PlayViewModel {
 		return recordingUntilDeleted.map { $0 != nil }
 	}
 	var noRecording: Observable<Bool> {
-		return hasRecording.map { !$0 }.delay(0, scheduler: MainScheduler())
+		return hasRecording.map { !$0 }.delay(.seconds(0), scheduler: MainScheduler())
 	}
 	var timeLabelText: Observable<String?> {
 		return progress.map { $0.map(timeString) }

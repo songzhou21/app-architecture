@@ -1,11 +1,12 @@
 import Foundation
 import RxSwift
+import RxRelay
 
 final class RecordViewModel {
 	// Inputs
 	var folder: Folder? = nil
 	let recording = Recording(name: "", uuid: UUID())
-	let duration = Variable<TimeInterval>(0)
+	let duration = BehaviorRelay<TimeInterval>(value: 0)
 	
 	// Actions
 	func recordingStopped(title: String?) {
@@ -19,7 +20,7 @@ final class RecordViewModel {
 	
 	func recorderStateChanged(time: TimeInterval?) {
 		if let t = time {
-			duration.value = t
+			duration.accept(t)
 		} else {
 			dismiss?()
 		}

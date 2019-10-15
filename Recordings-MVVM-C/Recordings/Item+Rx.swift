@@ -3,7 +3,10 @@ import RxCocoa
 import RxDataSources
 
 extension Item: IdentifiableType, Hashable {
-	var hashValue: Int { return uuid.hashValue }
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(uuid)
+	}
+	
 	static func ==(lhs: Item, rhs: Item) -> Bool {
 		return lhs.uuid == rhs.uuid
 	}

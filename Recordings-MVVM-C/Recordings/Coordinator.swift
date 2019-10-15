@@ -14,7 +14,7 @@ final class Coordinator {
 		
 		let folderVC = folderNavigationController.viewControllers.first as! FolderViewController
 		folderVC.delegate = self
-		folderVC.viewModel.folder.value = Store.shared.rootFolder
+		folderVC.viewModel.folder.accept(Store.shared.rootFolder)
 		folderVC.navigationItem.leftItemsSupplementBackButton = true
 		folderVC.navigationItem.leftBarButtonItem = folderVC.editButtonItem
 		
@@ -68,7 +68,7 @@ extension UIStoryboard {
 	func instantiatePlayerNavigationController(with recording: Recording, leftBarButtonItem: UIBarButtonItem) -> UINavigationController {
 		let playerNC = instantiateViewController(withIdentifier: "playerNavigationController") as! UINavigationController
 		let playerVC = playerNC.viewControllers[0] as! PlayViewController
-		playerVC.viewModel.recording.value = recording
+		playerVC.viewModel.recording.accept(recording)
 		playerVC.navigationItem.leftBarButtonItem = leftBarButtonItem
 		playerVC.navigationItem.leftItemsSupplementBackButton = true
 		return playerNC
@@ -76,7 +76,7 @@ extension UIStoryboard {
 	
 	func instantiateFolderViewController(with folder: Folder, delegate: FolderViewControllerDelegate) -> FolderViewController {
 		let folderVC = instantiateViewController(withIdentifier: "folderController") as! FolderViewController
-		folderVC.viewModel.folder.value = folder
+		folderVC.viewModel.folder.accept(folder)
 		folderVC.delegate = delegate
 		folderVC.navigationItem.leftItemsSupplementBackButton = true
 		folderVC.navigationItem.leftBarButtonItem = folderVC.editButtonItem

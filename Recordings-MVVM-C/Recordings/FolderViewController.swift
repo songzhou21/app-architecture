@@ -61,7 +61,7 @@ class FolderViewController: UITableViewController {
 	override func decodeRestorableState(with coder: NSCoder) {
 		super.decodeRestorableState(with: coder)
 		if let uuidPath = coder.decodeObject(forKey: .uuidPathKey) as? [UUID], let folder = Store.shared.item(atUUIDPath: uuidPath) as? Folder {
-			self.viewModel.folder.value = folder
+			self.viewModel.folder.accept(folder)
 		} else {
 			if var controllers = navigationController?.viewControllers, let index = controllers.index(where: { $0 === self }) {
 				controllers.remove(at: index)
