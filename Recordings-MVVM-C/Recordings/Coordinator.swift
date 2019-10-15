@@ -30,7 +30,7 @@ final class Coordinator {
 	
 	func updateForRemoval(of folder: Folder) {
 		let folderVCs = folderNavigationController.viewControllers as! [FolderViewController]
-		guard let index = folderVCs.index(where: { $0.viewModel.folder.value === folder }) else { return }
+		guard let index = folderVCs.firstIndex(where: { $0.viewModel.folder.value === folder }) else { return }
 		let previousIndex = index > 0 ? index - 1 : index
 		folderNavigationController.popToViewController(folderVCs[previousIndex], animated: true)
 	}

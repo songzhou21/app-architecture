@@ -67,20 +67,20 @@ class Folder: Item, Codable {
 		assert(contents.contains { $0 === item } == false)
 		contents.append(item)
 		contents.sort(by: { $0.name < $1.name })
-		let newIndex = contents.index { $0 === item }!
+		let newIndex = contents.firstIndex { $0 === item }!
 		item.parent = self
 		store?.save(item, userInfo: [Item.changeReasonKey: Item.added, Item.newValueKey: newIndex, Item.parentFolderKey: self])
 	}
 	
 	func reSort(changedItem: Item) -> (oldIndex: Int, newIndex: Int) {
-		let oldIndex = contents.index { $0 === changedItem }!
+		let oldIndex = contents.firstIndex { $0 === changedItem }!
 		contents.sort(by: { $0.name < $1.name })
-		let newIndex = contents.index { $0 === changedItem }!
+		let newIndex = contents.firstIndex { $0 === changedItem }!
 		return (oldIndex, newIndex)
 	}
 	
 	func remove(_ item: Item) {
-		guard let index = contents.index(where: { $0 === item }) else { return }
+		guard let index = contents.firstIndex(where: { $0 === item }) else { return }
 		item.deleted()
 		contents.remove(at: index)
 		store?.save(item, userInfo: [

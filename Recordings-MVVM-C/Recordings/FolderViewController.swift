@@ -16,6 +16,9 @@ class FolderViewController: UITableViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		tableView.delegate = nil
+		tableView.dataSource = nil
+		
 		viewModel.navigationTitle.bind(to: rx.title).disposed(by: disposeBag)
 		viewModel.folderContents.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
 		tableView.rx.modelDeleted(Item.self)
@@ -63,7 +66,7 @@ class FolderViewController: UITableViewController {
 		if let uuidPath = coder.decodeObject(forKey: .uuidPathKey) as? [UUID], let folder = Store.shared.item(atUUIDPath: uuidPath) as? Folder {
 			self.viewModel.folder.accept(folder)
 		} else {
-			if var controllers = navigationController?.viewControllers, let index = controllers.index(where: { $0 === self }) {
+			if var controllers = navigationController?.viewControllers, let index = controllers.firstIndex(where: { $0 === self }) {
 				controllers.remove(at: index)
 				navigationController?.viewControllers = controllers
 			}
